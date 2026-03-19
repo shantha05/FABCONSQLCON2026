@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Dealership Network - FabCon SQLCon 2026 Demo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-database"></i>
+                <h1>Microsoft Fabric SQL Database Demo</h1>
+            </div>
+            <div class="header-info">
+                <span class="update-time">Last Updated: <span id="lastUpdate">Loading...</span></span>
+                <button class="btn-refresh" onclick="refreshDashboard()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Key Metrics Cards -->
+        <section class="metrics-section">
+            <div class="metric-card card-blue">
+                <div class="metric-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>Available Inventory</h3>
+                    <p class="metric-value" id="availableVehicles">0</p>
+                    <span class="metric-label">Vehicles Ready to Sell</span>
+                </div>
+            </div>
+
+            <div class="metric-card card-green">
+                <div class="metric-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>Revenue (30 Days)</h3>
+                    <p class="metric-value" id="revenueLast30Days">$0</p>
+                    <span class="metric-label"><span id="salesLast30Days">0</span> Sales Completed</span>
+                </div>
+            </div>
+
+            <div class="metric-card card-purple">
+                <div class="metric-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>Service Center</h3>
+                    <p class="metric-value" id="servicesLast30Days">0</p>
+                    <span class="metric-label">Services Completed</span>
+                </div>
+            </div>
+
+            <div class="metric-card card-orange">
+                <div class="metric-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>Customer Base</h3>
+                    <p class="metric-value" id="totalCustomers">0</p>
+                    <span class="metric-label"><span id="testDrivesLast7Days">0</span> Test Drives (7 Days)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Row -->
+        <section class="charts-section">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3><i class="fas fa-globe-americas"></i> Regional Performance</h3>
+                </div>
+                <canvas id="regionalChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3><i class="fas fa-chart-pie"></i> Inventory by Status</h3>
+                </div>
+                <canvas id="inventoryStatusChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Second Charts Row -->
+        <section class="charts-section">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3><i class="fas fa-bolt"></i> Fuel Type Distribution</h3>
+                </div>
+                <canvas id="fuelTypeChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3><i class="fas fa-wrench"></i> Service Revenue Breakdown</h3>
+                </div>
+                <canvas id="serviceRevenueChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Tables Section -->
+        <section class="tables-section">
+            <div class="table-card">
+                <div class="table-header">
+                    <h3><i class="fas fa-trophy"></i> Top Customers</h3>
+                    <span class="badge">Lifetime Value</span>
+                </div>
+                <div class="table-container">
+                    <table id="customersTable">
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Country</th>
+                                <th>Purchases</th>
+                                <th>Loyalty Points</th>
+                                <th>Lifetime Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="loading">Loading customer data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-header">
+                    <h3><i class="fas fa-car-side"></i> Available Premium Vehicles</h3>
+                    <span class="badge">Hot Inventory</span>
+                </div>
+                <div class="table-container">
+                    <table id="inventoryTable">
+                        <thead>
+                            <tr>
+                                <th>Vehicle</th>
+                                <th>Location</th>
+                                <th>Fuel Type</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" class="loading">Loading inventory data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Recommendations Section -->
+        <section class="recommendations-section">
+            <div class="recommendations-card">
+                <div class="recommendations-header">
+                    <h3><i class="fas fa-brain"></i> AI-Powered Recommendations</h3>
+                    <span class="badge badge-ai">Intelligent Insights</span>
+                </div>
+                <div id="recommendationsContainer" class="recommendations-container">
+                    <div class="loading">Analyzing data for recommendations...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Test Drive Conversion Section -->
+        <section class="conversion-section">
+            <div class="table-card">
+                <div class="table-header">
+                    <h3><i class="fas fa-percentage"></i> Test Drive Conversion Rates</h3>
+                    <span class="badge">Performance Metrics</span>
+                </div>
+                <div class="table-container">
+                    <table id="conversionTable">
+                        <thead>
+                            <tr>
+                                <th>Region</th>
+                                <th>Vehicle</th>
+                                <th>Test Drives</th>
+                                <th>Conversions</th>
+                                <th>Conversion Rate</th>
+                                <th>Avg Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6" class="loading">Loading conversion data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4><i class="fas fa-database"></i> FabCon & SQLCon 2026</h4>
+                <p>Microsoft Fabric SQL Database Demo</p>
+            </div>
+            <div class="footer-section">
+                <h4><i class="fas fa-code"></i> Technology Stack</h4>
+                <p>Microsoft Fabric | SQL Database | Python Flask | Chart.js</p>
+            </div>
+            <div class="footer-section">
+                <h4><i class="fas fa-globe"></i> Global Dealership Network</h4>
+                <p>Real-time Analytics & AI-Powered Insights</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Microsoft Corporation | Fabric SQL Database | FabCon SQLCon Demo</p>
+        </div>
+    </footer>
+
+    <!-- Inline data loader - loads data immediately -->
+    <script>
+        console.log('=== IMMEDIATE DATA LOADER ===');
+        window.addEventListener('DOMContentLoaded', async function() {
+            console.log('Loading dashboard data directly...');
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/dashboard/summary');
+                const data = await response.json();
+                console.log('✅ Data received:', data);
+                
+                // Set all the values with error checking
+                const elements = {
+                    'availableVehicles': data.availableVehicles.toLocaleString(),
+                    'revenueLast30Days': `$${(data.revenueLast30Days / 1000).toFixed(0)}K`,
+                    'salesLast30Days': data.salesLast30Days,
+                    'servicesLast30Days': data.servicesLast30Days,
+                    'testDrivesLast7Days': data.testDrivesLast7Days,
+                    'totalCustomers': data.totalCustomers
+                };
+                
+                for (const [id, value] of Object.entries(elements)) {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.textContent = value;
+                        console.log(`✅ Set ${id} = ${value}`);
+                    } else {
+                        console.error(`❌ Element not found: ${id}`);
+                    }
+                }
+                
+                console.log('✅ ALL dashboard metrics updated!');
+            } catch (error) {
+                console.error('❌ Error loading data:', error);
+            }
+        });
+    </script>
+
+    <script>
+        // Inline test to see if this runs
+        console.log('=================================================');
+        console.log('INLINE SCRIPT TEST - HTML IS LOADING');
+        console.log('=================================================');
+    </script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}?v={{ range(1, 999999) | random }}&t=20260320-05"></script>
+    <script>
+        // Force console visibility
+        console.log('=================================================');
+        console.log('INDEX.HTML LOADED - CHECK CONSOLE FOR ERRORS');
+        console.log('If you see "Dashboard.js v2.0 - RELOADED", file is updated');
+        console.log('=================================================');
+    </script>
+</body>
+</html>

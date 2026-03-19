@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Transactions - Dealership Demo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .form-container { max-width: 800px; margin: 20px auto; padding: 20px; background: #2d2d2d; border-radius: 8px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 5px; color: #4fc1ff; font-weight: bold; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; background: #1e1e1e; border: 1px solid #444; border-radius: 4px; color: #fff; }
+        .btn { padding: 12px 24px; background: #0078d4; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin: 5px; }
+        .btn:hover { background: #106ebe; }
+        .btn-success { background: #107c10; }
+        .btn-success:hover { background: #0e6b0e; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 4px; display: none; }
+        .result.success { background: #1b5e20; display: block; }
+        .result.error { background: #c62828; display: block; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab { padding: 10px 20px; background: #1e1e1e; border: 1px solid #444; border-radius: 4px; cursor: pointer; }
+        .tab.active { background: #0078d4; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        h2 { color: #4fc1ff; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-car-side"></i>
+                <h1>Add Transactions</h1>
+            </div>
+            <button class="btn" onclick="location.href='/'">← Back to Dashboard</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('purchase')">Create Purchase</div>
+                <div class="tab" onclick="showTab('testdrive')">Schedule Test Drive</div>
+                <div class="tab" onclick="showTab('service')">Schedule Service</div>
+                <div class="tab" onclick="showTab('inventory')">Add Vehicle</div>
+            </div>
+
+            <!-- Create Purchase Form -->
+            <div id="purchase-tab" class="tab-content active">
+                <h2>Create New Purchase</h2>
+                <button type="button" class="btn" onclick="fillSamplePurchase()">Fill Sample Data</button>
+                <form id="purchaseForm">
+                    <div class="form-group">
+                        <label>Customer ID</label>
+                        <input type="number" name="customerID" required placeholder="e.g., 1" value="5">
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle ID</label>
+                        <input type="number" name="vehicleID" required placeholder="e.g., 1" value="15">
+                    </div>
+                    <div class="form-group">
+                        <label>Dealership ID</label>
+                        <input type="number" name="dealershipID" required placeholder="e.g., 1" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Sale Price</label>
+                        <input type="number" name="salePrice" required placeholder="e.g., 45000" value="52500">
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Method</label>
+                        <select name="paymentMethod" required>
+                            <option value="Cash">Cash</option>
+                            <option value="Finance" selected>Finance</option>
+                            <option value="Lease">Lease</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Salesperson Name (Optional)</label>
+                        <input type="text" name="salespersonName" placeholder="e.g., John Smith" value="Sarah Johnson">
+                    </div>
+                    <button type="submit" class="btn btn-success">Create Purchase</button>
+                </form>
+                <div id="purchase-result" class="result"></div>
+            </div>
+
+            <!-- Schedule Test Drive Form -->
+            <div id="testdrive-tab" class="tab-content">
+                <h2>Schedule Test Drive</h2>
+                <button type="button" class="btn" onclick="fillSampleTestDrive()">Fill Sample Data</button>
+                <form id="testdriveForm">
+                    <div class="form-group">
+                        <label>Customer ID</label>
+                        <input type="number" name="customerID" required placeholder="e.g., 1" value="8">
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle ID</label>
+                        <input type="number" name="vehicleID" required placeholder="e.g., 1" value="25">
+                    </div>
+                    <div class="form-group">
+                        <label>Dealership ID</label>
+                        <input type="number" name="dealershipID" required placeholder="e.g., 1" value="2">
+                    </div>
+                    <div class="form-group">
+                        <label>Test Drive Date/Time</label>
+                        <input type="datetime-local" name="testDriveDate" required id="testDriveDateTime">
+                    </div>
+                    <div class="form-group">
+                        <label>Duration (minutes)</label>
+                        <input type="number" name="duration" value="30" placeholder="e.g., 30">
+                    </div>
+                    <button type="submit" class="btn btn-success">Schedule Test Drive</button>
+                </form>
+                <div id="testdrive-result" class="result"></div>
+            </div>
+
+            <!-- Schedule Service Form -->
+            <div id="service-tab" class="tab-content">
+                <h2>Schedule Service Appointment</h2>
+                <button type="button" class="btn" onclick="fillSampleService()">Fill Sample Data</button>
+                <form id="serviceForm">
+                    <div class="form-group">
+                        <label>Customer ID</label>
+                        <input type="number" name="customerID" required placeholder="e.g., 1" value="3">
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle ID</label>
+                        <input type="number" name="vehicleID" required placeholder="e.g., 1" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Dealership ID</label>
+                        <input type="number" name="dealershipID" required placeholder="e.g., 1" value="3">
+                    </div>
+                    <div class="form-group">
+                        <label>Service Type</label>
+                        <select name="serviceType" required>
+                            <option value="Oil Change" selected>Oil Change</option>
+                            <option value="Tire Rotation">Tire Rotation</option>
+                            <option value="Brake Service">Brake Service</option>
+                            <option value="Engine Repair">Engine Repair</option>
+                            <option value="Transmission Service">Transmission Service</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Service Date/Time</label>
+                        <input type="datetime-local" name="serviceDate" required id="serviceDateTime">
+                    </div>
+                    <div class="form-group">
+                        <label>Technician Name (Optional)</label>
+                        <input type="text" name="technicianName" placeholder="e.g., Mike Johnson" value="Mike Thompson">
+                    </div>
+                    <button type="submit" class="btn btn-success">Schedule Service</button>
+                </form>
+                <div id="service-result" class="result"></div>
+            </div>
+
+            <!-- Add Vehicle Form -->
+            <div id="inventory-tab" class="tab-content">
+                <h2>Add Vehicle to Inventory</h2>
+                <button type="button" class="btn" onclick="fillSampleInventory()">Fill Sample Data</button>
+                <form id="inventoryForm">
+                    <div class="form-group">
+                        <label>Dealership ID</label>
+                        <input type="number" name="dealershipID" required placeholder="e.g., 1" value="4">
+                    </div>
+                    <div class="form-group">
+                        <label>Make</label>
+                        <input type="text" name="make" required placeholder="e.g., Tesla" value="Tesla">
+                    </div>
+                    <div class="form-group">
+                        <label>Model</label>
+                        <input type="text" name="model" required placeholder="e.g., Model 3" value="Model Y">
+                    </div>
+                    <div class="form-group">
+                        <label>Year</label>
+                        <input type="number" name="year" required placeholder="e.g., 2024" value="2024">
+                    </div>
+                    <div class="form-group">
+                        <label>Color</label>
+                        <input type="text" name="color" placeholder="e.g., Blue" value="Midnight Silver">
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input type="number" name="price" required placeholder="e.g., 45000" value="58990">
+                    </div>
+                    <div class="form-group">
+                        <label>Fuel Type</label>
+                        <select name="fuelType">
+                            <option value="Electric" selected>Electric</option>
+                            <option value="Gasoline">Gasoline</option>
+                            <option value="Hybrid">Hybrid</option>
+                            <option value="Diesel">Diesel</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Add Vehicle</button>
+                </form>
+                <div id="inventory-result" class="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+
+        // Initialize datetime fields on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setDefaultDateTime();
+        });
+
+        function setDefaultDateTime() {
+            const now = new Date();
+            now.setHours(now.getHours() + 2); // 2 hours from now
+            const dateTimeStr = now.toISOString().slice(0, 16);
+            
+            const testDriveField = document.getElementById('testDriveDateTime');
+            const serviceField = document.getElementById('serviceDateTime');
+            
+            if (testDriveField) testDriveField.value = dateTimeStr;
+            if (serviceField) serviceField.value = dateTimeStr;
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Sample data generators
+        function fillSamplePurchase() {
+            const form = document.getElementById('purchaseForm');
+            form.customerID.value = Math.floor(Math.random() * 20) + 1;
+            form.vehicleID.value = Math.floor(Math.random() * 50) + 1;
+            form.dealershipID.value = Math.floor(Math.random() * 8) + 1;
+            form.salePrice.value = Math.floor(Math.random() * 50000) + 30000;
+            form.salespersonName.value = ['John Smith', 'Sarah Johnson', 'Mike Davis', 'Emily Brown'][Math.floor(Math.random() * 4)];
+        }
+
+        function fillSampleTestDrive() {
+            const form = document.getElementById('testdriveForm');
+            form.customerID.value = Math.floor(Math.random() * 20) + 1;
+            form.vehicleID.value = Math.floor(Math.random() * 50) + 1;
+            form.dealershipID.value = Math.floor(Math.random() * 8) + 1;
+            setDefaultDateTime();
+        }
+
+        function fillSampleService() {
+            const form = document.getElementById('serviceForm');
+            form.customerID.value = Math.floor(Math.random() * 20) + 1;
+            form.vehicleID.value = Math.floor(Math.random() * 50) + 1;
+            form.dealershipID.value = Math.floor(Math.random() * 8) + 1;
+            form.technicianName.value = ['Mike Thompson', 'Alex Rodriguez', 'Chris Lee', 'Pat Wilson'][Math.floor(Math.random() * 4)];
+            setDefaultDateTime();
+        }
+
+        function fillSampleInventory() {
+            const makes = ['Tesla', 'BMW', 'Mercedes', 'Audi', 'Porsche', 'Lexus'];
+            const models = ['Model S', 'X5', 'E-Class', 'Q7', '911', 'RX 350'];
+            const colors = ['Black', 'White', 'Blue', 'Silver', 'Red'];
+            
+            const form = document.getElementById('inventoryForm');
+            const randomMake = makes[Math.floor(Math.random() * makes.length)];
+            
+            form.dealershipID.value = Math.floor(Math.random() * 8) + 1;
+            form.make.value = randomMake;
+            form.model.value = models[Math.floor(Math.random() * models.length)];
+            form.year.value = 2024;
+            form.color.value = colors[Math.floor(Math.random() * colors.length)];
+            form.price.value = Math.floor(Math.random() * 70000) + 40000;
+        }
+
+        // Purchase Form Handler
+        document.getElementById('purchaseForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Convert numeric fields
+            data.customerID = parseInt(data.customerID);
+            data.vehicleID = parseInt(data.vehicleID);
+            data.dealershipID = parseInt(data.dealershipID);
+            data.salePrice = parseFloat(data.salePrice);
+            
+            await submitTransaction('/purchases/create', data, 'purchase-result', e.target);
+        });
+
+        // Test Drive Form Handler
+        document.getElementById('testdriveForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            data.customerID = parseInt(data.customerID);
+            data.vehicleID = parseInt(data.vehicleID);
+            data.dealershipID = parseInt(data.dealershipID);
+            data.duration = parseInt(data.duration);
+            
+            await submitTransaction('/testdrives/schedule', data, 'testdrive-result', e.target);
+        });
+
+        // Service Form Handler
+        document.getElementById('serviceForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            data.customerID = parseInt(data.customerID);
+            data.vehicleID = parseInt(data.vehicleID);
+            data.dealershipID = parseInt(data.dealershipID);
+            
+            await submitTransaction('/service/schedule', data, 'service-result', e.target);
+        });
+
+        // Inventory Form Handler
+        document.getElementById('inventoryForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            data.dealershipID = parseInt(data.dealershipID);
+            data.year = parseInt(data.year);
+            data.price = parseFloat(data.price);
+            
+            await submitTransaction('/inventory/add', data, 'inventory-result', e.target);
+        });
+
+        async function submitTransaction(endpoint, data, resultId, formElement) {
+            const resultDiv = document.getElementById(resultId);
+            resultDiv.textContent = 'Processing...';
+            resultDiv.className = 'result';
+            resultDiv.style.display = 'block';
+            
+            try {
+                const response = await fetch(API_BASE + endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `<strong>✅ Success!</strong><br>${result.message}<br><pre>${JSON.stringify(result, null, 2)}</pre>`;
+                    
+                    // Reset form
+                    if (formElement) formElement.reset();
+                    
+                    // Suggest refresh
+                    setTimeout(() => {
+                        resultDiv.innerHTML += '<br><em>Go back to dashboard and refresh to see updated data!</em>';
+                    }, 1000);
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `<strong>❌ Error!</strong><br>${result.error || 'Unknown error'}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `<strong>❌ Error!</strong><br>${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

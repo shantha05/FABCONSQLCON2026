@@ -27,7 +27,7 @@ This demo represents a **global car dealership network** operating across four r
 - 🛠️ Service center operations and analytics
 - 💰 Customer purchase records and finance management
 - 🔧 Parts inventory and usage tracking
-- 📊 Real-time analytics and AI-powered insights
+- 📊 Real-time analytics and intelligent insights
 
 ### Key Capabilities
 
@@ -46,7 +46,7 @@ This demo represents a **global car dealership network** operating across four r
 - 💼 Customer lifetime value analysis
 - 🔧 Service revenue breakdown
 - 📉 Test drive conversion rate tracking
-- 🤖 AI-powered recommendations and predictive insights
+- 💡 Intelligent recommendations and business insights
 
 ## ✨ Features
 
@@ -184,14 +184,14 @@ See [INSTALL.md](INSTALL.md) for detailed step-by-step instructions.
 
 | Table | Description | Records |
 |-------|-------------|---------|
-| **Dealerships** | Store locations across 4 regions | 10 |
-| **Customers** | Customer profiles and loyalty data | 15 |
-| **VehicleInventory** | Vehicle stock and details | 22 |
-| **TestDrives** | Test drive bookings and outcomes | 12 |
-| **CustomerPurchases** | Sales transactions | 10 |
-| **ServiceRecords** | Service appointments and completions | 12 |
-| **Parts** | Parts catalog | 15 |
-| **PartUsage** | Parts used in service records | 18 |
+| **Dealerships** | Store locations across 4 regions | 20 |
+| **Customers** | Customer profiles and loyalty data | 100 |
+| **VehicleInventory** | Vehicle stock and details | 200 |
+| **TestDrives** | Test drive bookings and outcomes | 100 |
+| **CustomerPurchases** | Sales transactions | 60 |
+| **ServiceRecords** | Service appointments and completions | 150 |
+| **Parts** | Parts catalog | 50 |
+| **PartUsage** | Parts used in service records | 300 |
 
 ### Analytics Views
 
@@ -289,27 +289,6 @@ curl -X POST http://localhost:5000/api/ai/vehicle-search \
 - ✅ Near real-time data (< 5 minute mirror lag)
 - ✅ No impact on Flask app performance
 - ✅ Automatic data mirroring from SQL Database
-
-### Available DAX Measures
-
-The `/powerbi` folder contains ready-to-use DAX measures:
-
-- **KPIMeasures.dax** - Revenue, sales, customers
-- **TimeIntelligenceMeasures.dax** - MTD, YTD, MoM, YoY
-- **AdvancedAnalyticsMeasures.dax** - CLV, conversion rates
-- **RegionalPerformanceMeasures.dax** - Geographic analytics
-- **InventoryMeasures.dax** - Stock metrics
-- **FinancialMeasures.dax** - Finance and payment analytics
-- **DateTable.dax** - Date dimension for time intelligence
-
-### Import Measures
-
-1. In Power BI Desktop, create a table named `_Measures`
-2. Go to **Modeling** → **New Measure**
-3. Copy measures from `.dax` files and paste
-4. Or use **DAX Studio** for bulk import
-
-See [powerbi/README.md](powerbi/README.md) for detailed instructions.
 
 ## 🔐 Authentication Setup
 
@@ -460,20 +439,9 @@ FABCONSQLCON2026/
 ├── database/
 │   ├── 00_verify_data.sql        # Data verification queries
 │   ├── 01_schema.sql             # Table definitions
-│   ├── 02_sample_data.sql        # Sample data (42 records)
+│   ├── 02_sample_data.sql        # Sample data
 │   ├── 03_analytics_views.sql    # Analytics views (7 views)
 │   └── 04_indexes.sql            # Performance indexes
-├── powerbi/
-│   ├── README.md                 # Power BI setup guide
-│   ├── DateTable.dax             # Date dimension
-│   ├── KPIMeasures.dax           # KPI measures
-│   ├── TimeIntelligenceMeasures.dax
-│   ├── AdvancedAnalyticsMeasures.dax
-│   ├── RegionalPerformanceMeasures.dax
-│   ├── InventoryMeasures.dax
-│   ├── FinancialMeasures.dax
-│   ├── ThemeTemplate.json        # Corporate theme
-│   └── CustomVisuals.txt         # Recommended visuals
 └── scripts/
     ├── setup.ps1                 # Windows setup script
     └── setup.sh                  # Linux/Mac setup script
@@ -509,7 +477,7 @@ FABCONSQLCON2026/
 - Real-time KPIs across all operations
 - Regional performance comparison
 - Trend analysis and forecasting
-- AI-powered business insights
+- Intelligent business insights
 
 ## 🔧 Technology Stack
 

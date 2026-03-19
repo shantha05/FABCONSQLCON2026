@@ -1,6 +1,6 @@
 # 📦 Installation Guide
 
-Complete step-by-step installation guide for the Global Dealership Network application using Microsoft Fabric SQL Database.
+Complete step-by-step installation guide for the Microsoft Fabric SQL Database demo application.
 
 ## 📋 Table of Contents
 
@@ -225,14 +225,14 @@ GROUP BY t.name
 ORDER BY t.name;
 
 -- Expected counts:
--- Dealerships: 10
--- Customers: 15
--- VehicleInventory: 22
--- TestDrives: 12
--- CustomerPurchases: 10
--- ServiceRecords: 12
--- Parts: 15
--- PartUsage: 18
+-- Dealerships: 20
+-- Customers: 100
+-- VehicleInventory: 200
+-- TestDrives: 100
+-- CustomerPurchases: 60
+-- ServiceRecords: 150
+-- Parts: 50
+-- PartUsage: 300
 ```
 
 ---
@@ -424,25 +424,7 @@ Minimum version: December 2023 or later (for Direct Lake support)
 5. Authentication: **Microsoft account**
 6. Click **OK**
 
-### 6.3 Import DAX Measures
-
-1. In Power BI, go to **Modeling** tab
-2. Click **New Table**
-3. Create a table named: `_Measures`
-4. Go to **Modeling** → **New Measure**
-5. Copy measures from `/powerbi/*.dax` files
-6. Paste into formula bar
-
-**Recommended order:**
-1. DateTable.dax (create as Calculated Table)
-2. KPIMeasures.dax
-3. TimeIntelligenceMeasures.dax
-4. AdvancedAnalyticsMeasures.dax
-5. RegionalPerformanceMeasures.dax
-6. InventoryMeasures.dax
-7. FinancialMeasures.dax
-
-### 6.4 Create Relationships
+### 6.3 Create Relationships
 
 Power BI should auto-detect, but verify:
 
@@ -460,12 +442,6 @@ DateTable[Date] → CustomerPurchases[PurchaseDate]
 DateTable[Date] → ServiceRecords[ServiceDate]
 DateTable[Date] → TestDrives[TestDriveDate]
 ```
-
-### 6.5 Mark Date Table
-
-1. Select the **DateTable**
-2. Go to **Table Tools** → **Mark as Date Table**
-3. Choose **Date** as the date column
 
 ---
 
@@ -542,10 +518,6 @@ pip install -r requirements.txt
 
 **Issue:** Direct Lake not available
 - **Solution:** Use DirectQuery mode instead, or verify Fabric workspace settings
-
-**Issue:** DAX measure errors
-- **Solution:** Verify column names match database schema
-- Check measure dependencies (import base measures first)
 
 ### Performance Issues
 

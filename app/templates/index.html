@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Dealership Network - FabCon SQLCon 2026 Demo</title>
+    <title>Microsoft Fabric SQL Database Demo</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -17,10 +17,15 @@
                 <h1>Microsoft Fabric SQL Database Demo</h1>
             </div>
             <div class="header-info">
+                <div class="header-buttons">
+                    <button class="btn-transactions" onclick="location.href='/transactions'">
+                        <i class="fas fa-plus-circle"></i> Add Data
+                    </button>
+                    <button class="btn-refresh" onclick="refreshDashboard()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
                 <span class="update-time">Last Updated: <span id="lastUpdate">Loading...</span></span>
-                <button class="btn-refresh" onclick="refreshDashboard()">
-                    <i class="fas fa-sync-alt"></i> Refresh
-                </button>
             </div>
         </div>
     </header>
@@ -222,7 +227,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 Microsoft Corporation | Fabric SQL Database | FabCon SQLCon Demo</p>
+            <p>&copy; 2026 Microsoft Corporation | Microsoft Fabric SQL Database Demo</p>
         </div>
     </footer>
 

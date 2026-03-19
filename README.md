@@ -1,6 +1,6 @@
-# 🚗 Global Dealership Network - Fabric SQL Database Demo
+# SQL Database in Fabric: Modern Operational & Analytical Apps at Scale
 
-A comprehensive end-to-end demonstration of an operational and analytical application using **Microsoft Fabric SQL Database**. This project showcases a global car dealership network with real-time sales insights, inventory optimization, service analytics, and AI-powered recommendations.
+A comprehensive end-to-end demonstration of an operational and analytical application using **Microsoft Fabric SQL Database**. This project showcases a global car dealership network with real-time sales insights, inventory optimization, service analytics, and intelligent recommendations.
 
 ![Microsoft Fabric](https://img.shields.io/badge/Microsoft%20Fabric-SQL%20Database-blue) ![Python](https://img.shields.io/badge/Python-3.8+-yellow) ![Flask](https://img.shields.io/badge/Flask-3.0-lightgrey) ![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
 
@@ -78,11 +78,11 @@ This demo represents a **global car dealership network** operating across four r
 - Instant regional performance metrics
 - Immediate inventory status updates
 
-#### AI-Powered Features
-- **Semantic Vehicle Search**: Natural language queries like "electric SUV under 50k"
-- **Personalized Recommendations**: Based on customer purchase history
-- **Predictive Insights**: Trending vehicles and service trends
-- **Inventory Optimization**: AI-driven reorder recommendations
+#### Intelligent Features
+- **Smart Vehicle Search**: Keyword-based queries like "electric SUV under 50k"
+- **Recommendations Engine**: Based on customer ratings and test drive data
+- **Business Insights**: Trending vehicles and inventory optimization suggestions
+- **Parts Reorder Alerts**: Automatic low-stock notifications
 
 ## 🏗️ Architecture
 
@@ -235,11 +235,12 @@ GET /api/analytics/realtime/sales      # Sales in last hour/24h
 GET /api/analytics/realtime/activity   # Recent activity stream
 ```
 
-### AI Features
+### Intelligent Features
 ```http
-POST /api/ai/vehicle-search            # Natural language vehicle search
-POST /api/ai/recommendations/personalized  # Personalized vehicle recommendations
-GET  /api/ai/insights/predictive       # Predictive insights and trends
+POST /api/ai/vehicle-search            # Smart keyword-based vehicle search
+POST /api/ai/recommendations/personalized  # Customer-based vehicle recommendations
+GET  /api/ai/insights/predictive       # Business insights and trends
+GET  /api/recommendations/ai           # Vehicle and parts recommendations
 ```
 
 ### Example: Create Purchase
@@ -257,7 +258,7 @@ curl -X POST http://localhost:5000/api/purchases/create \
   }'
 ```
 
-### Example: Semantic Search
+### Example: Smart Vehicle Search
 
 ```bash
 curl -X POST http://localhost:5000/api/ai/vehicle-search \
@@ -265,6 +266,8 @@ curl -X POST http://localhost:5000/api/ai/vehicle-search \
   -d '{
     "query": "electric SUV under 50k"
   }'
+
+# Returns vehicles matching keywords: electric, SUV, price < 50000
 ```
 
 ## 📊 Power BI Integration
@@ -329,10 +332,11 @@ DB_DRIVER={ODBC Driver 18 for SQL Server}
 # Authentication (REQUIRED for Fabric SQL Database)
 USE_ENTRA_AUTH=True
 
-# Optional: Azure OpenAI for AI features
-AZURE_OPENAI_ENDPOINT=https://your-openai.openai.azure.com
-AZURE_OPENAI_API_KEY=your-api-key
-AZURE_OPENAI_DEPLOYMENT=gpt-4
+# Optional: Azure OpenAI (for advanced AI features - not required)
+# The app works fully without Azure OpenAI using simplified algorithms
+# AZURE_OPENAI_ENDPOINT=https://your-openai.openai.azure.com
+# AZURE_OPENAI_API_KEY=your-api-key
+# AZURE_OPENAI_DEPLOYMENT=gpt-4
 ```
 
 ### Connection Methods
@@ -446,12 +450,13 @@ FABCONSQLCON2026/
 │   ├── app.py                     # Flask application (1400+ lines)
 │   ├── requirements.txt           # Python dependencies
 │   ├── .env                       # Configuration (create from template)
+│   ├── start_demo.ps1            # Quick start script
 │   ├── static/
 │   │   ├── css/styles.css        # Dashboard styling
-│   │   └── js/dashboard.js       # Frontend logic
+│   │   └── js/dashboard.js       # Frontend logic (477 lines)
 │   └── templates/
 │       ├── index.html            # Main dashboard
-│       └── test.html             # Test page
+│       └── transactions.html     # Transaction forms page
 ├── database/
 │   ├── 00_verify_data.sql        # Data verification queries
 │   ├── 01_schema.sql             # Table definitions
@@ -513,8 +518,8 @@ FABCONSQLCON2026/
 - **Authentication:** Azure AD (Entra ID)
 - **Frontend:** HTML5, CSS3, JavaScript, Chart.js
 - **Analytics:** Power BI, Direct Lake, OneLake
-- **Deployment:** Azure App Service, Azure Functions
-- **AI:** Azure OpenAI (optional)
+- **Deployment:** Azure App Service, Container Apps
+- **Optional:** Azure OpenAI (for enhanced AI features)
 
 ## 📈 Performance Metrics
 

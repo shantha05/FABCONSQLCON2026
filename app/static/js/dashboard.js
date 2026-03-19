@@ -1,4 +1,4 @@
-// Global Dealership Network Dashboard JavaScript - Fresh Build
+// Microsoft Fabric SQL Database Demo - Dashboard JavaScript
 console.log('🚀 Dashboard.js LOADED - Fresh Build v3.0');
 
 // API Base URL
